@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Scientific</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .calculator {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      width: 360px;
+    }
+    .display {
+      background: #0f172a;
+      color: #f3f4f6;
+      font-size: 22px;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      text-align: right;
+      word-wrap: break-word;
+      min-height: 60px;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+    button {
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background: #334155;
+      color: #f3f4f6;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #475569;
+    }
+    button.equals { background: #22c55e; color: #06140b; font-weight: 700; }
+    button.clear { background: #ef4444; }
+    button.function { background: #0f172a; }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div id="display" class="display">0</div>
+    <div class="buttons">
+      <button class="clear" onclick="clearDisplay()">AC</button>
+      <button onclick="deleteChar()">DEL</button>
+      <button onclick="insert('(')">(</button>
+      <button onclick="insert(')')">)</button>
+      <button onclick="insert('^')">^</button>
+
+      <button class="function" onclick="insert('sin(')">sin</button>
+      <button class="function" onclick="insert('cos(')">cos</button>
+      <button class="function" onclick="insert('tan(')">tan</button>
+      <button class="function" onclick="insert('log(')">log</button>
+      <button class="function" onclick="insert('ln(')">ln</button>
+
+      <button onclick="insert('7')">7</button>
+      <button onclick="insert('8')">8</button>
+      <button onclick="insert('9')">9</button>
+      <button onclick="insert('/')">÷</button>
+      <button class="function" onclick="insert('√(')">√</button>
+
+      <button onclick="insert('4')">4</button>
+      <button onclick="insert('5')">5</button>
+      <button onclick="insert('6')">6</button>
+      <button onclick="insert('*')">×</button>
+      <button onclick="insert('π')">π</button>
+
+      <button onclick="insert('1')">1</button>
+      <button onclick="insert('2')">2</button>
+      <button onclick="insert('3')">3</button>
+      <button onclick="insert('-')">−</button>
+      <button onclick="insert('e')">e</button>
+
+      <button onclick="insert('0')">0</button>
+      <button onclick="insert('.')">.</button>
+      <button onclick="insert('%')">%</button>
+      <button onclick="insert('+')">+</button>
+      <button class="equals" onclick="calculate()">=</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+
+    function insert(val) {
+      if (display.textContent === '0') display.textContent = '';
+      display.textContent += val;
+    }
+
+    function clearDisplay() {
+      display.textContent = '0';
+    }
+
+    function deleteChar() {
+      display.textContent = display.textContent.slice(0, -1) || '0';
+    }
+
+    function calculate() {
+      let expr = display.textContent;
+
+      // Ganti simbol matematika dengan fungsi JS
+      expr = expr.replace(/π/g, 'Math.PI')
+                 .replace(/e/g, 'Math.E')
+                 .replace(/√\(/g, 'Math.sqrt(')
+                 .replace(/sin\(/g, 'Math.sin(')
+                 .replace(/cos\(/g, 'Math.cos(')
+                 .replace(/tan\(/g, 'Math.tan(')
+                 .replace(/log\(/g, 'Math.log10(')
+                 .replace(/ln\(/g, 'Math.log(')
+                 .replace(/\^/g, '**');
+
+      try {
+        let result = eval(expr);
+        if (!isFinite(result)) throw new Error("Math error");
+        display.textContent = result;
+      } catch (e) {
+        display.textContent = "Error";
+      }
+    }
+  </script>
+</body>
+</html>
